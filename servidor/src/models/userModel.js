@@ -64,10 +64,11 @@ const getUsersWithRolesAndPermissions = async () => {
 };
 
 // obtener el rol y los permisos asociados a ese rol
-const getRoleWithPermissions = async (rolId) => {
+const getRoleWithPermissions = async () => {
   try {
     const query = `
-      SELECT 
+      SELECT
+      r.id as rol_id,
         r.nombre AS rol,
         ARRAY_AGG(p.nombre) AS permisos
       FROM 
@@ -76,13 +77,11 @@ const getRoleWithPermissions = async (rolId) => {
         Roles_Permisos rp ON r.id = rp.rol_id
       LEFT JOIN 
         Permisos p ON rp.permiso_id = p.id
-      WHERE 
-        r.id = $1
       GROUP BY 
         r.id;
     `;
-    const result = await pool.query(query, [rolId]);
-    return result.rows[0];  // Devolver solo el primer rol con permisos
+    const result = await pool.query(query);
+    return result.rows;  
   } catch (err) {
     throw new Error('Error al obtener rol con permisos: ' + err.message);
   }

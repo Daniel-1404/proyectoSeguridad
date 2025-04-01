@@ -65,10 +65,9 @@ const getUsersController = async (req, res) => {
 
 // Controlador para obtener el rol y los permisos asociados
 const getRolePermissionsController = async (req, res) => {
-  const rolId = req.params.id;  // Obtener el ID del rol desde los parámetros de la URL
-
+  
   try {
-    const roleWithPermissions = await userModel.getRoleWithPermissions(rolId);
+    const roleWithPermissions = await userModel.getRoleWithPermissions();
 
     if (!roleWithPermissions) {
       return res.status(404).json({ error: 'Rol no encontrado o sin permisos' });

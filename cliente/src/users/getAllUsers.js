@@ -16,7 +16,7 @@ const fetchUsers = async () => {
 // Función para generar el contenido de la tabla con los usuarios
 const renderUserTable = async () => {
     const users = await fetchUsers(); // Obtenemos los usuarios
-    const tableBody = document.querySelector("tbody"); // Buscamos el <tbody>
+    const tableBody = document.querySelector("tbody");
     // Si no hay usuarios, mostramos un mensaje
     if (users.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">No hay usuarios disponibles</td></tr>`;
@@ -24,7 +24,6 @@ const renderUserTable = async () => {
     }
     // Generamos las filas dinámicamente
     tableBody.innerHTML = users.map(user => {
-        // Verificar si `permissions` existe y es un array
         const permissions = Array.isArray(user.permisos) ?
             `<div class="accordion" id="permissionsAccordion-${user.usuario_id}">
                 <div class="accordion-item">
