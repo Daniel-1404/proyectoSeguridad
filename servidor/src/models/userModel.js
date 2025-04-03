@@ -1,38 +1,38 @@
 const bcrypt = require('bcrypt');
-const pool = require('../config/dbConnection');  
+const pool = require('../config/dbConnection');
 
 //crear usuario
-const createUser = async (username, password, rol_id) => {  
-    try {
-      // Cifrado de la contraseña
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      // Consultas parametrizadas
-      const query = 'INSERT INTO usuarios (username, password, rol_id) VALUES ($1, $2, $3)';
-      const values = [username, hashedPassword, rol_id];
-  
-      const result = await pool.query(query, values);
-      return result.rows[0];
-    } catch (err) {
-      throw new Error('Error al crear usuario: ' + err.message);
-    }
-  };
+const createUser = async (username, password, rol_id) => {
+  try {
+    // Cifrado de la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
 
- //borrar usuario
+    // Consultas parametrizadas
+    const query = 'INSERT INTO usuarios (username, password, rol_id) VALUES ($1, $2, $3)';
+    const values = [username, hashedPassword, rol_id];
+
+    const result = await pool.query(query, values);
+    return result.rows[0];
+  } catch (err) {
+    throw new Error('Error al crear usuario: ' + err.message);
+  }
+};
+
+//borrar usuario
 const deleteUser = async (userId) => {
-    try {
-        const query = 'DELETE FROM usuarios WHERE id = $1 RETURNING *';
-        const values = [userId];
+  try {
+    const query = 'DELETE FROM usuarios WHERE id = $1 RETURNING *';
+    const values = [userId];
 
-        const result = await pool.query(query, values);
-        if (result.rowCount === 0) {
-            throw new Error('Usuario no encontrado');
-        }
-
-        return result.rows[0]; // Devuelve el usuario eliminado
-    } catch (err) {
-        throw new Error('Error al eliminar usuario: ' + err.message);
+    const result = await pool.query(query, values);
+    if (result.rowCount === 0) {
+      throw new Error('Usuario no encontrado');
     }
+
+    return result.rows[0]; // Devuelve el usuario eliminado
+  } catch (err) {
+    throw new Error('Error al eliminar usuario: ' + err.message);
+  }
 };
 
 // Función para obtener la lista de usuarios con sus roles y permisos
@@ -54,7 +54,7 @@ const getUsersWithRolesAndPermissions = async () => {
         Permisos p ON rp.permiso_id = p.id
     GROUP BY 
         u.id, u.username, r.nombre;`
-    ;
+      ;
 
     const result = await pool.query(query);
     return result.rows;
@@ -68,20 +68,22 @@ const getRoleWithPermissions = async () => {
   try {
     const query = `
       SELECT
-      r.id as rol_id,
-        r.nombre AS rol,
-        ARRAY_AGG(p.nombre) AS permisos
-      FROM 
-        Roles r
-      LEFT JOIN 
-        Roles_Permisos rp ON r.id = rp.rol_id
-      LEFT JOIN 
-        Permisos p ON rp.permiso_id = p.id
-      GROUP BY 
-        r.id;
+    r.id as rol_id,
+    r.nombre AS rol,
+    ARRAY_AGG(p.nombre) AS permisos
+    FROM 
+      Roles r
+    LEFT JOIN 
+      Roles_Permisos rp ON r.id = rp.rol_id
+    LEFT JOIN 
+      Permisos p ON rp.permiso_id = p.id
+    WHERE
+      r.nombre != 'SuperAdmin'  -- Excluye el rol de SuperAdmin
+    GROUP BY 
+      r.id;
     `;
     const result = await pool.query(query);
-    return result.rows;  
+    return result.rows;
   } catch (err) {
     throw new Error('Error al obtener rol con permisos: ' + err.message);
   }
@@ -135,6 +137,6 @@ const updateUser = async (id, username, rol_id) => {
 };
 
 //exportar modulos
-module.exports = { createUser,deleteUser,getUsersWithRolesAndPermissions,getRoleWithPermissions,getUserWithRoleAndPermissions,updateUser }; 
+module.exports = { createUser, deleteUser, getUsersWithRolesAndPermissions, getRoleWithPermissions, getUserWithRoleAndPermissions, updateUser };
 
 
