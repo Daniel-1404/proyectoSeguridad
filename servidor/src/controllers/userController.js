@@ -1,4 +1,4 @@
-const { body, validationResult,param } = require('express-validator');
+const { body, validationResult, param } = require('express-validator');
 const { userValidationRules } = require('../validations/userValidations');
 const userModel = require('../models/userModel');
 
@@ -8,7 +8,7 @@ const createUserController = [
 
   //validacion campos
   ...userValidationRules,
- 
+
   // Lógica para crear el usuario
   async (req, res) => {
     const errors = validationResult(req);
@@ -16,40 +16,44 @@ const createUserController = [
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     const { username, password, rol_id } = req.body;
+
+    if (rol_id == 1) {
+      return res.status(403).json({ error: 'Rol no permitido' });
+    }
+
 
     try {
       const newUser = await userModel.createUser(username, password, rol_id);
-      res.status(201).json({ message: 'Usuario creado exitosamente', user: newUser });
+      res.status(201).json({ message: 'Usuario creado exitosamente'});
     } catch (err) {
-      res.status(500).json({ error: 'Hubo un error al crear el usuario ' + err.message });
+      res.status(500).json({ error: 'Hubo un error al crear el usuario '});
     }
   }
 ];
 
 //borrar usuario
 const deleteUserController = [
-    // Validar y sanitizar el parámetro userId
-    param('id')
-        .isInt().withMessage('El ID debe ser un número entero')
-        .toInt(),
+  // Validar y sanitizar el parámetro userId
+  param('id')
+    .isInt().withMessage('El ID debe ser un número entero')
+    .toInt(),
 
-    async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-
-        const userId = req.params.id;
-
-        try {
-            const deletedUser = await userModel.deleteUser(userId);
-            res.status(200).json({ message: 'Usuario eliminado exitosamente', user: deletedUser });
-        } catch (err) {
-            res.status(404).json({ error: err.message });
-        }
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
+
+    const userId = req.params.id;
+
+    try {
+      const deletedUser = await userModel.deleteUser(userId);
+      res.status(200).json({ message: 'Usuario eliminado exitosamente'});
+    } catch (err) {
+      res.status(404).json({ error: err.message });
+    }
+  }
 ];
 
 
@@ -59,13 +63,13 @@ const getUsersController = async (req, res) => {
     const users = await userModel.getUsersWithRolesAndPermissions();
     res.status(200).json(users);  // Devuelve la lista de usuarios con roles y permisos
   } catch (err) {
-    res.status(500).json({ error: 'Hubo un error al obtener los usuarios: ' + err.message });
+    res.status(500).json({ error: 'Hubo un error al obtener los usuarios'});
   }
 };
 
 // Controlador para obtener el rol y los permisos asociados
 const getRolePermissionsController = async (req, res) => {
-  
+
   try {
     const roleWithPermissions = await userModel.getRoleWithPermissions();
 
@@ -75,7 +79,7 @@ const getRolePermissionsController = async (req, res) => {
 
     res.status(200).json(roleWithPermissions);  // Devuelve el rol y sus permisos
   } catch (err) {
-    res.status(500).json({ error: 'Hubo un error al obtener el rol con permisos: ' + err.message });
+    res.status(500).json({ error: 'Hubo un error al obtener el rol con permisos'});
   }
 };
 
@@ -92,13 +96,13 @@ const getUserForUpdateController = async (req, res) => {
 
     res.status(200).json(userData);  // Devuelve los datos del usuario, rol y permisos
   } catch (err) {
-    res.status(500).json({ error: 'Hubo un error al obtener los datos del usuario: ' + err.message });
+    res.status(500).json({ error: 'Hubo un error al obtener los datos del usuario'});
   }
 };
 
 
 const modifyUserController = [
- 
+
   body('username')
     .notEmpty().withMessage('El nombre de usuario es obligatorio')
     .isLength({ min: 3, max: 20 }).withMessage('Debe tener entre 3 y 20 caracteres')
@@ -116,6 +120,10 @@ const modifyUserController = [
     const { id } = req.params; // El ID del usuario que vamos a modificar
     const { username, rol_id } = req.body; // Los nuevos datos
 
+    if (rol_id == 1) {
+      return res.status(403).json({ error: 'Rol no permitido' });
+    }
+
     try {
       const updatedUser = await userModel.updateUser(id, username, rol_id);
 
@@ -126,17 +134,15 @@ const modifyUserController = [
       }
 
       res.status(200).json({
-        message: 'Usuario actualizado con éxito',
-        user: updatedUser,
+        message: 'Usuario actualizado con éxito'
       });
     } catch (error) {
       res.status(500).json({
-        message: 'Hubo un error al modificar el usuario',
-        error: error.message,
+        message: 'Hubo un error al modificar el usuario'
       });
     }
   },
 ];
 
 //exportar modulos
-module.exports = { createUserController,deleteUserController,getUsersController,getRolePermissionsController,getUserForUpdateController,modifyUserController };
+module.exports = { createUserController, deleteUserController, getUsersController, getRolePermissionsController, getUserForUpdateController, modifyUserController };
