@@ -5,6 +5,9 @@ const cors = require('cors');
 const bodyParser = require("body-parser");
 //llamar rutas de usuario
 const userRoutes = require('./src/routes/userRoutes');
+
+
+const loginRoutes = require('./src/routes/loginRoutes');
 //conexion a la bd
 const pool = require("./src/config/dbConnection");
 
@@ -15,8 +18,9 @@ app.use(bodyParser.json());
 
 
 // Rutas; 
-// rutas de usuario
+
 app.use('/api/users', userRoutes);
+app.use('/api/autentication', loginRoutes);
 
 
 
