@@ -12,9 +12,9 @@ const createUser = async (username, password, rol_id) => {
     const values = [username, hashedPassword, rol_id];
 
     const result = await pool.query(query, values);
-    return result.rows[0];
+    return { message: 'Usuario creado exitosamente' };
   } catch (err) {
-    throw new Error('Error al crear usuario: ' + err.message);
+    throw new Error('Error al crear usuario');
   }
 };
 
@@ -29,9 +29,9 @@ const deleteUser = async (userId) => {
       throw new Error('Usuario no encontrado');
     }
 
-    return result.rows[0]; // Devuelve el usuario eliminado
+    return  { message: 'Usuario eliminado exitosamente' };
   } catch (err) {
-    throw new Error('Error al eliminar usuario: ' + err.message);
+    throw new Error('Error al eliminar usuario');
   }
 };
 
@@ -59,7 +59,7 @@ const getUsersWithRolesAndPermissions = async () => {
     const result = await pool.query(query);
     return result.rows;
   } catch (err) {
-    throw new Error('Error al obtener usuarios con roles y permisos: ' + err.message);
+    throw new Error('Error al obtener usuarios con roles y permisos');
   }
 };
 
@@ -85,7 +85,7 @@ const getRoleWithPermissions = async () => {
     const result = await pool.query(query);
     return result.rows;
   } catch (err) {
-    throw new Error('Error al obtener rol con permisos: ' + err.message);
+    throw new Error('Error al obtener rol con permisos');
   }
 };
 
@@ -114,7 +114,7 @@ const getUserWithRoleAndPermissions = async (userId) => {
     const result = await pool.query(query, [userId]);
     return result.rows[0];  // Devolver los datos del usuario
   } catch (err) {
-    throw new Error('Error al obtener usuario con rol y permisos: ' + err.message);
+    throw new Error('Error al obtener usuario con rol y permisos');
   }
 };
 
@@ -130,9 +130,9 @@ const updateUser = async (id, username, rol_id) => {
       return null; // No se encontró el usuario
     }
 
-    return result.rows[0]; // Devuelve el usuario actualizado
+    return { message: 'Usuario modificado exitosamente' }; 
   } catch (error) {
-    throw new Error('Error al actualizar el usuario: ' + error.message);
+    throw new Error('Error al actualizar el usuario');
   }
 };
 
