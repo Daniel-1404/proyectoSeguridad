@@ -5,6 +5,9 @@ const cors = require('cors');
 const bodyParser = require("body-parser");
 //llamar rutas
 const userRoutes = require('./src/routes/userRoutes');
+const productRoutes = require('./src/routes/productRoutes');
+const loginRoutes = require('./src/routes/loginRoutes');
+
 //conexion a la bd
 const pool = require("./src/config/dbConnection");
 
@@ -15,9 +18,9 @@ app.use(bodyParser.json());
 
 
 // Rutas; 
-
 app.use('/api/users', userRoutes);
-
+app.use('/api/autentication', loginRoutes);
+app.use('/api/products', productRoutes);
 
 
 // Puerto
