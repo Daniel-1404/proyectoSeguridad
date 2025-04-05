@@ -3,11 +3,8 @@ require("dotenv").config(); // Para manejar las variables de entorno
 const express = require("express");
 const cors = require('cors'); 
 const bodyParser = require("body-parser");
-//llamar rutas de usuario
+//llamar rutas
 const userRoutes = require('./src/routes/userRoutes');
-
-
-const loginRoutes = require('./src/routes/loginRoutes');
 //conexion a la bd
 const pool = require("./src/config/dbConnection");
 
@@ -20,7 +17,6 @@ app.use(bodyParser.json());
 // Rutas; 
 
 app.use('/api/users', userRoutes);
-app.use('/api/autentication', loginRoutes);
 
 
 
