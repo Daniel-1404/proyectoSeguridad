@@ -2,44 +2,36 @@
 const submitForm = async (event) => {
     event.preventDefault();
 
-    // Verificar si el formulario es válido 
+    // Verificar validación HTML5 básica
     const form = event.target.closest('form');
     if (!form.checkValidity()) {
         form.reportValidity();
         return;
     }
 
-    // Validar el formulario antes de enviarlo (si tienes validaciones adicionales)
-    if (!validateForm()) return;
+    // Validación personalizada más completa
+    if (!validateProductForm()) return;
 
-    // Obtener los valores de los campos del formulario
-    const codigo = document.getElementById('codigo').value;
-    const nombre = document.getElementById('nombre').value;
-    const descripcion = document.getElementById('descripcion').value;
-    const cantidad = document.getElementById('cantidad').value;
-    const precio = document.getElementById('precio').value;
+    // Obtener y preparar los datos
+    const productData = {
+        codigo: document.getElementById('codigo').value.trim(),
+        nombre: document.getElementById('nombre').value.trim(),
+        descripcion: document.getElementById('descripcion').value.trim(),
+        cantidad: parseInt(document.getElementById('cantidad').value),
+        precio: parseFloat(document.getElementById('precio').value)
+    };
 
     // Limpiar mensajes de error previos
     const errorMessageDiv = document.getElementById('errorMessage');
     errorMessageDiv.style.display = 'none';
     errorMessageDiv.textContent = '';
 
-    // Crear objeto con los datos (solo campos requeridos)
-    const productData = {
-        codigo: codigo,
-        nombre: nombre,
-        descripcion: descripcion,
-        cantidad: parseInt(cantidad),
-        precio: parseFloat(precio)
-    };
-
     // Enviar datos al servidor
     try {
         const response = await fetch('http://localhost:3000/api/products/createProduct', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}` // Asumiendo autenticación JWT
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(productData)
         });
@@ -65,23 +57,3 @@ const submitForm = async (event) => {
 // Asignar la función al botón de guardar
 const saveButton = document.querySelector('.btn-success');
 saveButton.addEventListener('click', submitForm);
-
-// Validación adicional del formulario (opcional)
-function validateForm() {
-    const codigo = document.getElementById('codigo').value;
-    const precio = document.getElementById('precio').value;
-
-    // Validar que el código sea alfanumérico (frontend)
-    if (!/^[a-zA-Z0-9]+$/.test(codigo)) {
-        alert('El código debe ser alfanumérico');
-        return false;
-    }
-
-    // Validar que el precio sea positivo
-    if (parseFloat(precio) < 0) {
-        alert('El precio no puede ser negativo');
-        return false;
-    }
-
-    return true;
-}

@@ -1,23 +1,7 @@
 const { body, validationResult, param } = require('express-validator');
+const { productValidationRules } = require('../validations/productValidations');
 const productModel = require('../models/productModel');
 
-// Validaciones reutilizables (similar a userValidations.js)
-const productValidationRules = [
-    body('codigo')
-        .notEmpty().withMessage('El código es obligatorio')
-        .isAlphanumeric().withMessage('El código debe ser alfanumérico')
-        .isLength({ min: 3, max: 50 }).withMessage('El código debe tener entre 3 y 50 caracteres'),
-    
-    body('nombre')
-        .notEmpty().withMessage('El nombre es obligatorio')
-        .isLength({ min: 3, max: 255 }).withMessage('El nombre debe tener entre 3 y 255 caracteres'),
-    
-    body('cantidad')
-        .isInt({ min: 0 }).withMessage('La cantidad debe ser un número entero positivo'),
-    
-    body('precio')
-        .isFloat({ min: 0 }).withMessage('El precio debe ser un número positivo')
-];
 
 // Crear producto (similar a createUserController)
 const createProductController = [
