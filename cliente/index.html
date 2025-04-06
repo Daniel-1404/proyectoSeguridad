@@ -100,24 +100,28 @@
           headers: {
             'Content-Type': 'application/json'
           },
+          credentials: 'include',
           body: JSON.stringify({ username, password })
         });
 
         const data = await res.json();
+        const rol = data.user?.nombre;
 
         if (res.ok) {
-          alert('Inicio de sesión exitoso');
-          if(data.nombre == 'SuperAdmin'){
+          
+          if(rol == 'SuperAdmin'){
             window.location.href = '/public/views/crud_usuario/dashboard.html';
-          }else if(data.nombre == 'Auditor'){
+
+          }else if(rol == 'Auditor'){
             
-          }else if(data.nombre == 'Registrador'){
-           
+          }else if(rol == 'Registrador'){
+            window.location.href = '/public/views/crud_producto/dashboardProductos.html';
+
           }else{
             errorMsg.textContent = data.message || 'Error al iniciar sesión';
           }    
         } else {
-          errorMsg.textContent = data.message || 'Error al iniciar sesión';
+          errorMsg.textContent = data.message || 'Usuario o contraseña incorrectos';
         }
       } catch (error) {
         errorMsg.textContent = 'Usuario o contraseña incorrectos';

@@ -3,6 +3,7 @@ require("dotenv").config(); // Para manejar las variables de entorno
 const express = require("express");
 const cors = require('cors'); 
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
 //llamar rutas
 const userRoutes = require('./src/routes/userRoutes');
 const productRoutes = require('./src/routes/productRoutes');
@@ -11,16 +12,25 @@ const loginRoutes = require('./src/routes/loginRoutes');
 //conexion a la bd
 const pool = require("./src/config/dbConnection");
 
+
+
+
 const app = express();
-app.use(cors()); 
+app.use(cors({
+  origin: process.env.FRONTEND_ORIGIN,
+  credentials: true
+})); 
 // Middleware para parsear el cuerpo de las peticiones
 app.use(bodyParser.json());
+app.use(cookieParser());
+//Verificar session
+const verifyToken = require('./src/middlewares/authMiddleware');
 
 
 // Rutas; 
-app.use('/api/users', userRoutes);
+app.use('/api/users',verifyToken, userRoutes);
 app.use('/api/autentication', loginRoutes);
-app.use('/api/products', productRoutes);
+app.use('/api/products',verifyToken, productRoutes);
 
 
 // Puerto

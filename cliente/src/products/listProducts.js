@@ -6,8 +6,15 @@ const fetchProducts = async () => {
         const response = await fetch(API_URL, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}` // Token JWT
-            }
+            },
+            credentials: 'include',
         });
+
+        if (response.status === 401) {
+            window.location.href = '/index.html'; 
+            return; 
+        }
+
         if (!response.ok) throw new Error("Error al obtener los productos");
         return await response.json();
     } catch (error) {
