@@ -1,7 +1,14 @@
 // Función para obtener los roles y permisos desde la API
 const fetchRolesWithPermissions = async () => {
     try {
-        const response = await fetch('http://localhost:3000/api/users/getRols/');
+        const response = await fetch('http://localhost:3000/api/users/getRols/', {
+            credentials: 'include'
+        });
+
+        if (response.status === 401) {
+            window.location.href = '/index.html'; 
+            return; 
+        }
 
         return await response.json();
     } catch (error) {

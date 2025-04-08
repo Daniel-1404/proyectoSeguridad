@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 //llamar rutas
 const userRoutes = require('./src/routes/userRoutes');
+const sessionRoutes = require('./src/routes/sessionRoutes');
 const productRoutes = require('./src/routes/productRoutes');
 const loginRoutes = require('./src/routes/loginRoutes');
 
@@ -28,6 +29,7 @@ const verifyToken = require('./src/middlewares/authMiddleware');
 
 
 // Rutas; 
+app.use('/api/session',verifyToken, sessionRoutes);
 app.use('/api/users',verifyToken, userRoutes);
 app.use('/api/autentication', loginRoutes);
 app.use('/api/products',verifyToken, productRoutes);

@@ -33,8 +33,14 @@ const submitForm = async (event) => {
             headers: {
                 'Content-Type': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify(productData)
         });
+
+        if (response.status === 401) {
+            window.location.href = '/index.html'; 
+            return; 
+        }
 
         const result = await response.json();
 

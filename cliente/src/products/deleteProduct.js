@@ -5,8 +5,14 @@ const deleteProduct = async (codigo) => {
             method: "DELETE",
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}` // Añadir token JWT
-            }
+            },
+            credentials: 'include'
         });
+
+        if (response.status === 401) {
+            window.location.href = '/index.html'; 
+            return; 
+        }
 
         if (!response.ok) {
             const result = await response.json();

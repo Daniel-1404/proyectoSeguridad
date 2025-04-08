@@ -9,7 +9,15 @@ const cargarDatosUsuario = async () => {
     const usuarioId = obtenerIdDesdeUrl();  
     try {
         // Obtener los datos del usuario con el ID desde la URL
-        const response = await fetch(`http://localhost:3000/api/users/getUser/${usuarioId}`);
+        const response = await fetch(`http://localhost:3000/api/users/getUser/${usuarioId}`, {
+            credentials: 'include'
+        });
+
+        if (response.status === 401) {
+            window.location.href = '/index.html'; 
+            return; 
+        }
+        
         const usuario = await response.json();
         if (!usuario) {
             alert("Usuario no encontrado");

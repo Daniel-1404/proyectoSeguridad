@@ -3,7 +3,14 @@ const API_URL = "http://localhost:3000/api/users/getAllUsers"; // Endpoint del b
 // Función para obtener usuarios de la API
 const fetchUsers = async () => {
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, {
+            credentials: 'include'
+        });
+
+        if (response.status === 401) {
+            window.location.href = '/index.html'; 
+            return; 
+        }
         if (!response.ok) throw new Error("Error al obtener los usuarios");
 
         return await response.json();

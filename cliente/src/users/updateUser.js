@@ -29,11 +29,17 @@ const submitForm = async (event) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     username: usuario,
                     rol_id: rolAsignado
                 }),
             });
+
+            if (response.status === 401) {
+                window.location.href = '/index.html'; 
+                return; 
+            }
 
             const result = await response.json();
             if (response.ok) {

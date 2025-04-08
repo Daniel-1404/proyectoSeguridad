@@ -15,7 +15,14 @@ const cargarDatosProducto = async () => {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/api/products/getProductByCode/${codigo}`);
+        const response = await fetch(`http://localhost:3000/api/products/getProductByCode/${codigo}`, {
+            credentials: 'include'
+        });
+
+        if (response.status === 401) {
+            window.location.href = '/index.html'; 
+            return; 
+        }
 
         if (!response.ok) {
             const error = await response.json();
