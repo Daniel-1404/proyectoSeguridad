@@ -8,6 +8,10 @@ const sessionValidation = (req, res) => {
   }
 };
 
+const closeSession = (req, res) => {
+  res.clearCookie('access_token').json({message: 'Sesión cerrada'}); 
+};  
+
 module.exports = {
-    sessionValidation
+    sessionValidation,closeSession
 };

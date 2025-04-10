@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Redirigir a la página de confirmación
                 window.location.href = "../../views/crud_usuario/eliminarUsuario.html";
             } else {
-                alert("Error al eliminar el usuario.");
+                window.location.reload();
             }
         });
     }
