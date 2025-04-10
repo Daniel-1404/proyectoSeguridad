@@ -15,4 +15,19 @@ const verifyToken = (req, res, next) => {
 }
 
 
-module.exports = verifyToken;
+// Middleware para verificar el rol del usuario
+const authorizeRoles = (...allowedRoles) => {
+    return (req, res, next) => {
+        const user = req.session.user;
+        const rol = user.name;
+        if (rol != user.name || !user || !allowedRoles.includes(user.name)) {
+            return res.status(403).json({ error: 'No tienes permiso para acceder a esta ruta' });
+        }
+        next();
+    };
+};
+
+module.exports = {
+    verifyToken,
+    authorizeRoles
+};

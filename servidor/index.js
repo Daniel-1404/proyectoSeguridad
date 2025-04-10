@@ -25,14 +25,14 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(cookieParser());
 //Verificar session
-const verifyToken = require('./src/middlewares/authMiddleware');
+const { verifyToken, authorizeRoles } = require('./src/middlewares/authMiddleware');
 
 
 // Rutas; 
 app.use('/api/session',verifyToken, sessionRoutes);
-app.use('/api/users',verifyToken, userRoutes);
+app.use('/api/users',verifyToken,authorizeRoles('SuperAdmin'), userRoutes);
 app.use('/api/autentication', loginRoutes);
-app.use('/api/products',verifyToken, productRoutes);
+app.use('/api/products',verifyToken,authorizeRoles('Registrador'), productRoutes);
 
 
 // Puerto

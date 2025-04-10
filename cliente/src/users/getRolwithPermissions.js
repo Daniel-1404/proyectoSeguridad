@@ -6,7 +6,7 @@ const fetchRolesWithPermissions = async () => {
         });
 
         if (response.status === 401) {
-            window.location.href = '/index.html'; 
+            window.location.href = '/index.html';
             return; 
         }
 

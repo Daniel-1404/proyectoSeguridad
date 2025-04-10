@@ -8,10 +8,11 @@ const fetchUsers = async () => {
         });
 
         if (response.status === 401) {
-            window.location.href = '/index.html'; 
+            window.location.href = '/index.html';
             return; 
         }
         if (!response.ok) throw new Error("Error al obtener los usuarios");
+        
 
         return await response.json();
     } catch (error) {
