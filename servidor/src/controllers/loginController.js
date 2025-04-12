@@ -1,4 +1,4 @@
-const UserRepository = require('../repository/userRepository');
+const { UserRepository } = require('../repository/userRepository');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -7,8 +7,11 @@ require('dotenv').config();
 const loginAutentication = async (req, res) => {
     const { username, password } = req.body;
 
+    
     try {
         const user = await UserRepository.login({username, password});
+        await UserRepository.updateLastLogin(user.id);
+        
         const token = jwt.sign(
             { username: user.username, name: user.nombre }, 
             process.env.JWT_SECRET, 

@@ -7,7 +7,7 @@ class UserRepository{
         Validation.username(username)
         Validation.password(password)
 
-        const result = await pool.query('SELECT username,password,nombre FROM usuarios u INNER JOIN roles r ON r.id = u.rol_id WHERE username = $1 LIMIT 1', [username]);
+        const result = await pool.query('SELECT u.id as id,username,password,nombre FROM usuarios u INNER JOIN roles r ON r.id = u.rol_id WHERE username = $1 LIMIT 1', [username]);
         const user = result.rows[0];
         if(!user) throw new Error('Usuario no encontrado')
 
@@ -18,6 +18,11 @@ class UserRepository{
 
         return user    
     }
+
+    static async updateLastLogin(id) {
+        const query = 'UPDATE usuarios SET last_login = NOW() WHERE id = $1';
+        await pool.query(query, [id]);
+      }
 }
 
 class Validation {
@@ -33,4 +38,8 @@ class Validation {
     }
 }
 
-module.exports = UserRepository;
+
+
+module.exports = {
+    UserRepository
+};

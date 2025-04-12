@@ -43,6 +43,7 @@ const getUsersWithRolesAndPermissions = async () => {
       u.id AS usuario_id, 
       u.username AS nombre_usuario, 
       r.nombre AS rol,
+      u.last_login AS ultimo_login,
       ARRAY_AGG(p.nombre) AS permisos
     FROM 
         Usuarios u

@@ -56,6 +56,14 @@ const renderUserTable = async () => {
                 <td class="text-center">${user.nombre_usuario}</td>
                 <td class="text-center">${user.rol}</td>
                 <td class="text-center">${permissions}</td>
+                <td class="text-center">
+                ${user.ultimo_login 
+                    ? new Date(user.ultimo_login).toLocaleString('es-ES', {
+                        dateStyle: 'medium',
+                        timeStyle: 'short'
+                    })
+                    : 'Sin registro'}
+                </td>
                 <td class="d-flex justify-content-center">
                     <a href="editarUsuario.html?id=${user.usuario_id}" class="btn btn-warning btn-sm me-2">Editar</a>
                     <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
