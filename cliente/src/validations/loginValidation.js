@@ -3,47 +3,43 @@ async function checkLogin() {
     const errorMsg = document.getElementById('errorMsg');
 
     form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+        e.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
 
-      //Validacion de datos del Form
-      if (!ValidateData(username, password)) {
-        return;
-      }
-
-      try {
-        const res = await fetch('http://localhost:3000/api/autentication/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          credentials: 'include',
-          body: JSON.stringify({ username, password })
-        });
-
-        const data = await res.json();
-        const rol = data.user?.nombre;
-
-        if (res.ok) {
-          
-          if(rol == 'SuperAdmin'){
-            window.location.href = '/public/views/crud_usuario/dashboard.html';
-
-          }else if(rol == 'Auditor'){
-            
-          }else if(rol == 'Registrador'){
-            window.location.href = '/public/views/crud_producto/dashboardProductos.html';
-
-          }else{
-            errorMsg.textContent = data.message || 'Error al iniciar sesión';
-          }    
-        } else {
-          errorMsg.textContent = data.message || 'Usuario o contraseña incorrectos';
+        if (!ValidateData(username, password)) {
+            return;
         }
-      } catch (error) {
-        errorMsg.textContent = 'Usuario o contraseña incorrectos';
-      }
+
+        try {
+            const res = await fetch('http://localhost:3000/api/autentication/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await res.json();
+            const rol = data.user?.nombre;
+
+            if (res.ok) {
+                if (rol == 'SuperAdmin') {
+                    window.location.href = '/public/views/crud_usuario/dashboard.html';
+                } else if (rol == 'Auditor') {
+                    window.location.href = '/public/views/auditor/dashboard.html';
+                } else if (rol == 'Registrador') {
+                    window.location.href = '/public/views/crud_producto/dashboardProductos.html';
+                } else {
+                    errorMsg.textContent = data.message || 'Error al iniciar sesión';
+                }
+            } else {
+                errorMsg.textContent = data.message || 'Usuario o contraseña incorrectos';
+            }
+        } catch (error) {
+            errorMsg.textContent = 'Usuario o contraseña incorrectos';
+        }
     });
 }
 checkLogin();

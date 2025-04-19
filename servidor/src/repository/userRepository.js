@@ -6,15 +6,16 @@ class UserRepository{
     static async login ({username, password}){
         Validation.username(username)
         Validation.password(password)
+        const cleanPassword = password.trim();
 
         const result = await pool.query('SELECT u.id as id,username,password,nombre FROM usuarios u INNER JOIN roles r ON r.id = u.rol_id WHERE username = $1 LIMIT 1', [username]);
         const user = result.rows[0];
         if(!user) throw new Error('Usuario no encontrado')
+        const isValid = await bcrypt.compare(cleanPassword, user.password);
+        if (!isValid) throw new Error('Contraseña incorrecta')
 
-        const isValid = await bcrypt.compare(password, user.password)
-        if(!isValid) throw new Error('Contraseña incorrecta')
+        const { password: _, ...publicUser } = user
 
-        const {password: _, ...publicUser} = user
 
         return user    
     }
