@@ -1,4 +1,5 @@
 const { body, param } = require('express-validator');
+const xss = require('xss-clean');  // Requiere el paquete 'xss-clean'
 
 // Reglas de validación para productos (UTN-03)
 const productValidationRules = [
@@ -11,10 +12,12 @@ const productValidationRules = [
     body('nombre')
         .notEmpty().withMessage('El nombre es obligatorio')
         .isLength({ min: 3, max: 255 }).withMessage('El nombre debe tener entre 3 y 255 caracteres')
+        .customSanitizer(value => xss(value))  // Sanitiza para evitar XSS
         .trim(),
 
     body('descripcion')
         .optional()  // No es obligatorio según UTN-03
+        .customSanitizer(value => xss(value))  // Sanitiza para evitar XSS
         .trim(),
 
     body('cantidad')
