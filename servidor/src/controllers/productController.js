@@ -1,5 +1,6 @@
 const { body, validationResult, param } = require('express-validator');
 const { productValidationRules } = require('../validations/productValidations');
+const xss = require('xss');  // Importar el sanitizador XSS
 const productModel = require('../models/productModel');
 
 
@@ -98,9 +99,16 @@ const getProductByCodeController = [
 // Actualizar producto (similar a modifyUserController)
 const updateProductController = [
     param('codigo').isAlphanumeric().withMessage('El código debe ser alfanumérico'),
-    body('nombre').isLength({ min: 3 }).withMessage('Nombre debe tener al menos 3 caracteres'),
+    body('nombre')
+        .isLength({ min: 3 }).withMessage('Nombre debe tener al menos 3 caracteres')
+        .customSanitizer(value => xss(value))  // Sanitiza para evitar XSS
+        .trim(),
     body('cantidad').isInt({ min: 0 }).withMessage('Cantidad debe ser entero positivo'),
     body('precio').isFloat({ min: 0 }).withMessage('Precio debe ser número positivo'),
+    body('descripcion')
+        .optional()
+        .customSanitizer(value => xss(value))  // Sanitiza para evitar XSS
+        .trim(),
 
     async (req, res) => {
         const errors = validationResult(req);
@@ -112,7 +120,7 @@ const updateProductController = [
             const { codigo } = req.params;
             const { nombre, descripcion, cantidad, precio } = req.body;
 
-            // Cambio clave: Pasar los datos como objeto
+            // Cambiar la forma en que se pasan los datos, asegurándonos de que estén sanitizados
             const updatedProduct = await productModel.updateProduct(codigo, {
                 nombre,
                 descripcion: descripcion || null,

@@ -1,5 +1,5 @@
 const { body, param } = require('express-validator');
-const xss = require('xss-clean');  // Requiere el paquete 'xss-clean'
+const xss = require('xss');  // Usamos 'xss' para sanitizar campos individualmente
 
 // Reglas de validación para productos (UTN-03)
 const productValidationRules = [
@@ -7,17 +7,18 @@ const productValidationRules = [
         .notEmpty().withMessage('El código es obligatorio')
         .isAlphanumeric().withMessage('El código debe contener solo letras y números')
         .isLength({ min: 3, max: 50 }).withMessage('El código debe tener entre 3 y 50 caracteres')
+        .customSanitizer(value => xss(value))  // 💡 Sanitiza para evitar XSS
         .trim(),
 
     body('nombre')
         .notEmpty().withMessage('El nombre es obligatorio')
         .isLength({ min: 3, max: 255 }).withMessage('El nombre debe tener entre 3 y 255 caracteres')
-        .customSanitizer(value => xss(value))  // Sanitiza para evitar XSS
+        .customSanitizer(value => xss(value))  // 💡 Sanitiza para evitar XSS
         .trim(),
 
     body('descripcion')
         .optional()  // No es obligatorio según UTN-03
-        .customSanitizer(value => xss(value))  // Sanitiza para evitar XSS
+        .customSanitizer(value => xss(value))  // 💡 Sanitiza para evitar XSS
         .trim(),
 
     body('cantidad')
@@ -34,6 +35,7 @@ const productParamValidation = [
     param('codigo')
         .isAlphanumeric().withMessage('El código debe ser alfanumérico')
         .isLength({ min: 3, max: 50 }).withMessage('El código debe tener entre 3 y 50 caracteres')
+        .customSanitizer(value => xss(value))  // 💡 Sanitiza para evitar XSS
 ];
 
 module.exports = { 
