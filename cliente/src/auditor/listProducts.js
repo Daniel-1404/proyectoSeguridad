@@ -1,15 +1,20 @@
-const API_URL = "http://localhost:3000/api/products/getAllProducts";
+const AUD_PRODUCT_API_URL = "http://localhost:3000/api/products/getAllProducts";
 
 const fetchProducts = async () => {
     try {
-        const response = await fetch(API_URL, {
-            credentials: 'include'
+        const response = await fetch(AUD_PRODUCT_API_URL, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
         });
 
         if (response.status === 401) {
             window.location.href = '/index.html';
             return;
         }
+
         if (!response.ok) throw new Error("Error al obtener los productos");
         return await response.json();
     } catch (error) {
@@ -23,7 +28,7 @@ const renderProductTable = async () => {
     const tableBody = document.getElementById("productsTableBody");
 
     if (products.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No hay productos disponibles</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">No hay productos disponibles</td></tr>`;
         return;
     }
 

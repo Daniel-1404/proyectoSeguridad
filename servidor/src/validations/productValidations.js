@@ -1,7 +1,7 @@
 const { body, param } = require('express-validator');
 const xss = require('xss');  // Usamos 'xss' para sanitizar campos individualmente
 
-// Reglas de validación para productos (UTN-03)
+
 const productValidationRules = [
     body('codigo')
         .notEmpty().withMessage('El código es obligatorio')
