@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 modal.hide();
                 
                 // Redirigir a la página de confirmación
-                window.location.href = "../../views/crud_producto/dashboardProductos.html";
+                window.location.href = "../../views/crud_producto/eliminarProducto.html";
             } else {
                 alert("Error al eliminar el producto. Verifica tus permisos o intenta nuevamente.");
             }
