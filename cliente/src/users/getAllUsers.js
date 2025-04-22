@@ -1,9 +1,9 @@
-const API_URL = "http://localhost:3000/api/users/getAllUsers"; // Endpoint del backend
+const USERS_API_URL = "http://localhost:3000/api/users/getAllUsers"; // Endpoint del backend
 
 // Función para obtener usuarios de la API
 const fetchUsers = async () => {
     try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(USERS_API_URL, {
             credentials: 'include'
         });
 

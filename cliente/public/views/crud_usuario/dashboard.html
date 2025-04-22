@@ -18,22 +18,44 @@
     <br><br><br><br><br><br><br>
     <!-- Begin page content -->
     <main class="flex-shrink-0">
-        <div class="container border rounded shadow-lg">
-            <h3 class="my-3" id="titulo">Reporte de usuarios</h3>
+        <div class="container mt-4"><h2 class="mb-4">Panel de Administrador</h2></div>
 
-            <a href="crearUsuario.html" class="btn btn-success">Agregar</a>
+        <div class="container border rounded shadow-lg my-4">
+            <h3 class="my-3" id="titulo">Reporte de Usuarios</h3>
 
-            <table class="table table-hover table-bordered my-3" aria-describedby="titulo">
-                <thead class="table-dark ">
+            <a href="crearUsuario.html" class="btn btn-success mb-3">Agregar</a>
+
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
                     <tr>
-                        <th scope="col" class="text-center">Usuario</th>
-                        <th scope="col" class="text-center">Rol</th>
-                        <th scope="col" class="text-center">Permisos</th>
-                        <th scope="col" class="text-center">Ultimo Acceso</th>
-                        <th scope="col" class="text-center">Opciones</th>
+                        <th class="text-center">Usuario</th>
+                        <th class="text-center">Rol</th>
+                        <th class="text-center">Permisos</th>
+                        <th class="text-center">Último Acceso</th>
+                        <th class="text-center">Opciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="usersTableBody">
+                    <!-- Se cargan los usuarios automáticamente -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="container border rounded shadow-lg my-4">
+            <h3 class="my-3">Reporte de Productos</h3>
+
+            <table class="table table-hover table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-center">Código</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Descripción</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Precio</th>
+                    </tr>
+                </thead>
+                <tbody id="productsTableBody">
+                    <!-- Se cargan los productos automáticamente -->
                 </tbody>
             </table>
         </div>
@@ -67,9 +89,10 @@
     <script src="../../../src/utils/navigation.js"></script>
     <script src="../../../src/utils/footer.js"></script>
     <script src="../../../src/users/getAllUsers.js"></script>
+    <script src="../../../src/auditor/listProducts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
     <script src="../../../src/users/deleteUser.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -79,12 +102,12 @@
             if (shouldShowAlert) {
                 // Mostramos la alerta de Bootstrap
                 const alertHTML = `
-            <div class="alert alert-success alert-dismissible fade show" role="alert" 
-                 style="position: fixed; top: 20px; right: 20px; z-index: 1100;">
-                <strong>¡Éxito!</strong> Los cambios se han guardado correctamente..
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        `;
+                    <div class="alert alert-success alert-dismissible fade show" role="alert"
+                         style="position: fixed; top: 20px; right: 20px; z-index: 1100;">
+                        <strong>¡Éxito!</strong> Los cambios se han guardado correctamente..
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
 
                 document.body.insertAdjacentHTML('afterbegin', alertHTML);
 

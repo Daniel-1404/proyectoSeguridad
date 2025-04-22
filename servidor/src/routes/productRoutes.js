@@ -24,7 +24,7 @@ router.delete(
 router.get(
     '/getAllProducts',
     verifyToken,
-    authorizeRoles('Registrador', 'Auditor'),
+    authorizeRoles('SuperAdmin', 'Registrador', 'Auditor'), 
     productController.getProductsController
 );
 

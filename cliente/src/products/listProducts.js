@@ -1,9 +1,9 @@
-const API_URL = "http://localhost:3000/api/products/getAllProducts"; // Endpoint de productos
+const PRODUCTS_API_URL = "http://localhost:3000/api/products/getAllProducts"; // Endpoint de productos
 
 // Función para obtener productos de la API
 const fetchProducts = async () => {
     try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(PRODUCTS_API_URL, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}` // Token JWT
             },

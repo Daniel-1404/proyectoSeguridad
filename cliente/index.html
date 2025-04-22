@@ -20,26 +20,34 @@
   </div>
 
 
-
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Mostrar alerta si hay mensaje de éxito (para creación/actualización)
         const showInactivityAlert = sessionStorage.getItem('showInactivityAlert');
-
+  
         if (showInactivityAlert) {
             const alertHTML = `
                 <div class="alert alert-warning alert-dismissible fade show" role="alert" 
                       style="position: fixed; top: 20px; right: 20px; z-index: 1100;">
                     <strong>¡Ups!</strong> Has estado inactivo mucho tiempo.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button id="closeAlertAndTab" type="button" class="btn-close" aria-label="Close"></button>
                 </div>
             `;
             document.body.insertAdjacentHTML('afterbegin', alertHTML);
             sessionStorage.removeItem('showInactivityAlert');
-            
+  
+            setTimeout(() => {
+                const closeBtn = document.getElementById('closeAlertAndTab');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        closeBtn.closest('.alert').remove();
+                        window.close();
+                    });
+                }
+            }, 100);
         }
     });
   </script>
+  
   <script src="src/validations/loginValidation.js"></script>
 </body>
 </html>

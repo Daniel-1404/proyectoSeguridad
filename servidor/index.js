@@ -30,9 +30,9 @@ const { verifyToken, authorizeRoles } = require('./src/middlewares/authMiddlewar
 
 // Rutas; 
 app.use('/api/session',verifyToken, sessionRoutes);
-app.use('/api/users', verifyToken, authorizeRoles('SuperAdmin', 'Auditor'), userRoutes);
+app.use('/api/users', verifyToken, authorizeRoles('SuperAdmin', 'Registrador', 'Auditor'), userRoutes);
 app.use('/api/autentication', loginRoutes);
-app.use('/api/products', verifyToken, authorizeRoles('Registrador', 'Auditor'), productRoutes);
+app.use('/api/products', verifyToken, authorizeRoles('SuperAdmin', 'Registrador', 'Auditor'), productRoutes);
 
 
 // Puerto
