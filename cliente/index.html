@@ -22,7 +22,6 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Mostrar alerta si hay mensaje de éxito (para creación/actualización)
         const showInactivityAlert = sessionStorage.getItem('showInactivityAlert');
   
         if (showInactivityAlert) {
@@ -36,19 +35,12 @@
             document.body.insertAdjacentHTML('afterbegin', alertHTML);
             sessionStorage.removeItem('showInactivityAlert');
   
-            // Esperar un momento para asegurarse que el botón esté en el DOM
             setTimeout(() => {
                 const closeBtn = document.getElementById('closeAlertAndTab');
                 if (closeBtn) {
                     closeBtn.addEventListener('click', () => {
-                        // Cierra la alerta visualmente (opcional si ya se elimina)
                         closeBtn.closest('.alert').remove();
-  
-                        // Intentar cerrar la pestaña (puede no funcionar si no fue abierta por JS)
                         window.close();
-  
-                        // Alternativa: redireccionar
-                        // window.location.href = 'login.html';
                     });
                 }
             }, 100);
