@@ -4,7 +4,7 @@ const xss = require('xss');  // Importar el sanitizador XSS
 const productModel = require('../models/productModel');
 
 
-// Crear producto (similar a createUserController)
+// Crear producto
 const createProductController = [
     ...productValidationRules,
     
@@ -30,7 +30,7 @@ const createProductController = [
     }
 ];
 
-// Eliminar producto (similar a deleteUserController)
+// Eliminar producto
 const deleteProductController = [
     param('codigo')
         .isAlphanumeric().withMessage('El código debe ser alfanumérico'),
@@ -55,7 +55,7 @@ const deleteProductController = [
     }
 ];
 
-// Obtener todos los productos (similar a getUsersController)
+// Obtener todos los productos
 const getProductsController = async (req, res) => {
     try {
         const products = await productModel.getAllProducts();
@@ -67,7 +67,7 @@ const getProductsController = async (req, res) => {
     }
 };
 
-// Obtener producto por código (similar a getUserByIdController)
+// Obtener producto por código
 const getProductByCodeController = [
     param('codigo')
         .isAlphanumeric().withMessage('El código debe ser alfanumérico'),
@@ -96,7 +96,7 @@ const getProductByCodeController = [
     }
 ];
 
-// Actualizar producto (similar a modifyUserController)
+// Actualizar producto
 const updateProductController = [
     param('codigo').isAlphanumeric().withMessage('El código debe ser alfanumérico'),
     body('nombre')

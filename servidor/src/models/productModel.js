@@ -1,5 +1,6 @@
 const pool = require('../config/dbConnection');
 
+// Crear producto
 const createProduct = async (codigo, nombre, descripcion, cantidad, precio) => {
     try {
         const query = `
@@ -15,6 +16,7 @@ const createProduct = async (codigo, nombre, descripcion, cantidad, precio) => {
     }
 };
 
+// Obtener todos los productos
 const getAllProducts = async () => {
     try {
         const result = await pool.query('SELECT codigo, nombre, descripcion, cantidad, precio FROM productos');
@@ -24,6 +26,7 @@ const getAllProducts = async () => {
     }
 };
 
+// Obtener producto por código
 const getProductByCode = async (codigo) => {
     try {
         const query = `
@@ -31,12 +34,13 @@ const getProductByCode = async (codigo) => {
             FROM productos 
             WHERE codigo = $1`;
         const { rows } = await pool.query(query, [codigo]);
-        return rows[0]; // Devuelve el primer producto encontrado o undefined
+        return rows[0];
     } catch (err) {
         throw new Error('Error al buscar producto por código: ' + err.message);
     }
 };
 
+// Actualizar producto
 const updateProduct = async (codigo, { nombre, descripcion, cantidad, precio }) => {
     try {
         // Validación adicional
@@ -73,6 +77,7 @@ const updateProduct = async (codigo, { nombre, descripcion, cantidad, precio }) 
     }
 };
 
+// Eliminar producto
 const deleteProduct = async (codigo) => {
     try {
         const result = await pool.query(

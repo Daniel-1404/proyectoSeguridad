@@ -24,9 +24,6 @@ const validateProductForm = () => {
         errors.push('El nombre debe tener entre 3 y 255 caracteres');
     }
 
-    // Validar descripción (opcional, sin validación de longitud en server)
-    // No agregamos validaciones ya que es optional() en el server
-
     // Validar cantidad (entero positivo)
     if (!quantity) {
         errors.push('La cantidad es obligatoria');

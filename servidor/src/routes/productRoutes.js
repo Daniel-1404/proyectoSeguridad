@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const productController = require('../controllers/productController');
 const { verifyToken, authorizeRoles } = require('../middlewares/authMiddleware');
-// const { checkPermission } = require('../middlewares/authMiddleware'); 
 
-// Rutas para productos (cumpliendo UTN-03 y UTN-07)
+// Rutas para productos
+// Crear producto
 router.post(
     '/createProduct',
     verifyToken,
@@ -12,6 +12,7 @@ router.post(
     productController.createProductController
 );
 
+// Eliminar producto
 router.delete(
     '/deleteProduct/:codigo',
     verifyToken,
@@ -19,13 +20,15 @@ router.delete(
     productController.deleteProductController
 );
 
+// Obtener todos los productos
 router.get(
     '/getAllProducts',
     verifyToken,
-    authorizeRoles('Registrador', 'Auditor'), // Permitir a Auditor ver productos
+    authorizeRoles('Registrador', 'Auditor'),
     productController.getProductsController
 );
 
+// Obtener producto por código
 router.get(
     '/getProductByCode/:codigo',
     verifyToken,
@@ -33,11 +36,11 @@ router.get(
     productController.getProductByCodeController
 );
 
+// Actualizar producto
 router.put(
     '/updateProduct/:codigo',
     verifyToken,
     authorizeRoles('Registrador'),
-    // checkPermission('Editar Productos'), // Solo rol "Registrador"
     productController.updateProductController
 );
 
